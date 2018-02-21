@@ -70,12 +70,18 @@ $(function() {
           * should have two expectations: does the menu display when
           * clicked and does it hide when clicked again.
           */
+
+          var beforeClickMenuStatus;
+          var afterClickMenuStatus;
+
           it('changes visibility on click', function() {
-            $('.menu-icon-link').trigger('click');
-            expect($('body').hasClass('menu-hidden')).toBe(false);
+            beforeClickMenuStatus = $('body').hasClass('menu-hidden');
 
             $('.menu-icon-link').trigger('click');
-            expect($('body').hasClass('menu-hidden')).toBe(true);
+            afterClickMenuStatus = $('body').hasClass('menu-hidden');
+
+            $('.menu-icon-link').trigger('click');
+            expect(beforeClickMenuStatus).not.toEqual(afterClickMenuStatus);
           });
      });
 
@@ -89,7 +95,10 @@ $(function() {
          * the use of Jasmine's beforeEach and asynchronous done() function.
          */
          beforeEach(function( done ) {
-            loadFeed(0, done);
+            //loadFeed(0, done);
+            loadFeed(0, function() {
+                done();
+            });
         });
 
         it('.entry and .feed is not empty', function() {
